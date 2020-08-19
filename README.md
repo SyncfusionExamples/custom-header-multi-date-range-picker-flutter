@@ -1,2 +1,2 @@
-# custom-header-multi-date-range-picker-flutter
-How to customize the header in Flutter multi date range picker (SfDateRangePicker)?
+
+**[View document in Syncfusion Flutter Knowledge base](https://www.syncfusion.com/kb/11897/how-to-customize-the-header-in-flutter-multi-date-range-picker-sfdaterangepicker)**
