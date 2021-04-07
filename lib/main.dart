@@ -23,14 +23,8 @@ class MultiplePickerSample extends StatefulWidget {
 }
 
 class _MultiplePickerSampleState extends State<MultiplePickerSample> {
-  DateRangePickerController _controller;
-  String _headerString;
-
-  @override
-  void initState() {
-    _controller = DateRangePickerController();
-    super.initState();
-  }
+  final DateRangePickerController _controller = DateRangePickerController();
+  String _headerString = '';
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +51,7 @@ class _MultiplePickerSampleState extends State<MultiplePickerSample> {
                   highlightColor: Colors.lightGreen,
                   onPressed: () {
                     setState(() {
-                      _controller.backward();
+                      _controller.backward!();
                     });
                   },
                 )),
@@ -82,7 +76,7 @@ class _MultiplePickerSampleState extends State<MultiplePickerSample> {
                   highlightColor: Colors.lightGreen,
                   onPressed: () {
                     setState(() {
-                      _controller.forward();
+                      _controller.forward!();
                     });
                   },
                 )),
@@ -100,10 +94,9 @@ class _MultiplePickerSampleState extends State<MultiplePickerSample> {
               enableMultiView: true,
               onViewChanged: viewChanged,
               monthViewSettings: DateRangePickerMonthViewSettings(
-                  showTrailingAndLeadingDates: true,
                   viewHeaderStyle: DateRangePickerViewHeaderStyle(
-                    backgroundColor: Color(0xFFfcc169),
-                  )),
+                backgroundColor: Color(0xFFfcc169),
+              )),
             ),
           ),
         )
@@ -112,16 +105,18 @@ class _MultiplePickerSampleState extends State<MultiplePickerSample> {
   }
 
   void viewChanged(DateRangePickerViewChangedArgs args) {
-    final int count = (args.visibleDateRange.endDate
-        .difference(args.visibleDateRange.startDate)
-        .inDays);
-     /// For updating proper custom header string if showLeadingAndTrailingDates value as true/false.
+    final DateTime startDate = args.visibleDateRange.startDate!;
+    final DateTime endDate = args.visibleDateRange.endDate!;
+    final int count = endDate.difference(startDate).inDays;
+
     _headerString = DateFormat('MMMM yyyy')
-        .format(args.visibleDateRange.startDate.add(Duration(days: (count * 0.25).toInt())))
-        .toString() + ' - ' +DateFormat('MMMM yyyy')
-        .format(args.visibleDateRange.startDate.add(Duration(days: (count * 0.75).toInt())))
-        .toString();
-    SchedulerBinding.instance.addPostFrameCallback((duration) {
+            .format(startDate.add(Duration(days: (count * 0.25).toInt())))
+            .toString() +
+        ' - ' +
+        DateFormat('MMMM yyyy')
+            .format(startDate.add(Duration(days: (count * 0.75).toInt())))
+            .toString();
+    SchedulerBinding.instance!.addPostFrameCallback((duration) {
       setState(() {});
     });
   }
